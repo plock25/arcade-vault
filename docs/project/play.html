@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player</title>
+  <style>
+    body, html { margin: 0; padding: 0; background: #000; width: 100%; height: 100%; overflow: hidden; }
+    #game { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+  <div id="game"></div>
+
+  <script type="text/javascript">
+    EJS_player = '#game';
+    EJS_core = 'nes'; // System core: nes, snes, gba, gbc
+    EJS_gameUrl = 'mario.nes'; // Must match the exact filename of your uploaded ROM
+    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+  </script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
+</body>
+</html>
