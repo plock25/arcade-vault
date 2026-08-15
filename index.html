@@ -89,20 +89,25 @@
   <div id="game-vault">
     <h1>Vault Access</h1>
     
-    <!-- Game Search Bar -->
+    <!-- Search Bar -->
     <input type="text" id="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
 
     <hr style="border-color: #333; margin-top: 25px;">
 
     <div class="game-grid" id="game-grid">
-      <!-- Game 1 -->
+      <!-- Game 1: Punch-Out -->
       <a href="docs/project/play.html" class="game-card">
         <div class="card-icon">🥊</div>
         <h3>Mike Tyson's Punch-Out!!</h3>
         <p>NES Game</p>
       </a>
 
-      <!-- Add future game cards below following the same format -->
+      <!-- Game 2: Slope -->
+      <a href="docs/project/slope.html" class="game-card">
+        <div class="card-icon">🟢</div>
+        <h3>Slope</h3>
+        <p>3D Runner</p>
+      </a>
     </div>
   </div>
 
@@ -124,7 +129,6 @@
       if (event.key === "Enter") unlockVault();
     }
 
-    // Search function to filter game cards
     function filterGames() {
       const input = document.getElementById('search-bar').value.toLowerCase();
       const cards = document.getElementsByClassName('game-card');
