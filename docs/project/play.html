@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Mario Bros.</title>
+  <title>Player</title>
   <style>
     body, html { margin: 0; padding: 0; background: #000; width: 100%; height: 100%; overflow: hidden; }
     #game { width: 100%; height: 100%; }
@@ -14,9 +14,21 @@
   <div id="game"></div>
 
   <script type="text/javascript">
+    // Detect which game was clicked from the URL (?game=mario or ?game=punchout)
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedGame = urlParams.get('game');
+
+    let romFile = 'mario.nes'; // Default
+
+    if (selectedGame === 'punchout') {
+      romFile = 'punchout%21%21%21.nes';
+    } else if (selectedGame === 'mario') {
+      romFile = 'mario.nes';
+    }
+
     EJS_player = '#game';
     EJS_core = 'nes'; 
-    EJS_gameUrl = 'mario.nes'; 
+    EJS_gameUrl = romFile; 
     EJS_startOnLoaded = true;
     EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
   </script>
