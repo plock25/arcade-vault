@@ -27,7 +27,7 @@
       width: 100%;
       margin-top: 50px;
     }
-    input[type="password"] {
+    input[type="password"], #search-bar {
       width: 100%;
       padding: 12px;
       font-size: 16px;
@@ -36,8 +36,12 @@
       background-color: #2a2a2a;
       color: white;
       text-align: center;
-      margin-top: 15px;
       outline: none;
+    }
+    input[type="password"] { margin-top: 15px; }
+    #search-bar {
+      margin-top: 20px;
+      max-width: 400px;
     }
     button {
       width: 100%;
@@ -84,15 +88,21 @@
 
   <div id="game-vault">
     <h1>Vault Access</h1>
-    <hr style="border-color: #333;">
+    
+    <!-- Game Search Bar -->
+    <input type="text" id="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
 
-    <div class="game-grid">
-      <!-- Corrected Path -->
+    <hr style="border-color: #333; margin-top: 25px;">
+
+    <div class="game-grid" id="game-grid">
+      <!-- Game 1 -->
       <a href="docs/project/play.html" class="game-card">
         <div class="card-icon">🥊</div>
         <h3>Mike Tyson's Punch-Out!!</h3>
         <p>NES Game</p>
       </a>
+
+      <!-- Add future game cards below following the same format -->
     </div>
   </div>
 
@@ -113,8 +123,22 @@
     function checkEnter(event) {
       if (event.key === "Enter") unlockVault();
     }
+
+    // Search function to filter game cards
+    function filterGames() {
+      const input = document.getElementById('search-bar').value.toLowerCase();
+      const cards = document.getElementsByClassName('game-card');
+
+      for (let i = 0; i < cards.length; i++) {
+        const title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+        if (title.includes(input)) {
+          cards[i].style.display = "";
+        } else {
+          cards[i].style.display = "none";
+        }
+      }
+    }
   </script>
 
 </body>
 </html>
-
