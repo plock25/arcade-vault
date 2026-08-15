@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player</title>
+  <title>Document</title>
   <style>
-    body, html { margin: 0; padding: 0; background: #000; width: 100%; height: 100%; overflow: hidden; }
-    #game { width: 100%; height: 100%; }
+    body, html { 
+      margin: 0; 
+      padding: 0; 
+      width: 100%; 
+      height: 100%; 
+      overflow: hidden; 
+      background: #000; 
+    }
+    iframe { 
+      width: 100%; 
+      height: 100%; 
+      border: none; 
+    }
   </style>
 </head>
 <body>
-
-  <div id="game"></div>
-
-  <script type="text/javascript">
-    EJS_player = '#game';
-    EJS_core = 'nes'; 
-    EJS_gameUrl = 'punchout%21%21%21.nes'; 
-    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-  </script>
-  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
-
+  <iframe src="https://storage.y8.com/y8-studio/unity/v107/slope/" allowfullscreen></iframe>
 </body>
 </html>
-
