@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #login-gate {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 350px;
+      width: 100%;
+      margin-top: 50px;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #2a2a2a;
+      color: white;
+      text-align: center;
+      margin-top: 15px;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #error-msg { color: #ff4d4d; font-size: 14px; margin-top: 12px; }
+    #game-vault { display: none; width: 100%; max-width: 800px; text-align: center; }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .game-card {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .game-card:hover { border-color: #007bff; }
+    .card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <div id="login-gate">
+    <h2>🔒 Protected Access</h2>
+    <p>Enter passcode:</p>
+    <input type="password" id="passcode" placeholder="Passcode" onkeydown="checkEnter(event)">
+    <button onclick="unlockVault()">Submit</button>
+    <p id="error-msg"></p>
+  </div>
+
+  <div id="game-vault">
+    <h1>Vault Access</h1>
+    <hr style="border-color: #333;">
+
+    <div class="game-grid">
+      <!-- Game Card Link -->
+      <a href="games/mario/play.html" class="game-card">
+        <div class="card-icon">🕹️</div>
+        <h3>Retro Game 1</h3>
+        <p>Launch Player</p>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const SECRET_KEY = "0525";
+
+    function unlockVault() {
+      const userInput = document.getElementById("passcode").value;
+      if (userInput === SECRET_KEY) {
+        document.getElementById("login-gate").style.display = "none";
+        document.getElementById("game-vault").style.display = "block";
+      } else {
+        document.getElementById("error-msg").innerText = "Incorrect passcode.";
+        document.getElementById("passcode").value = "";
+      }
+    }
+
+    function checkEnter(event) {
+      if (event.key === "Enter") unlockVault();
+    }
+  </script>
+
+</body>
+</html>
