@@ -5,38 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Study Vault</title>
   <style>
-    body { background-color: #1a1a1a; color: #fff; font-family: monospace; text-align: center; padding-top: 50px; }
-    #vault-content { display: none; margin-top: 20px; }
-    input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #444; }
-    button { padding: 10px 15px; font-size: 16px; cursor: pointer; background-color: #00ffcc; border: none; border-radius: 5px; color: #000; font-weight: bold; }
-    .game-btn { display: block; width: 250px; margin: 10px auto; padding: 15px; background: #333; color: white; text-decoration: none; border-radius: 8px; border: 1px solid #555; }
-    .game-btn:hover { background: #444; }
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .vault-card {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      text-align: center;
+      width: 320px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #2a2a2a;
+      color: white;
+      width: 80%;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      width: 90%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .game-list {
+      display: none;
+      margin-top: 15px;
+    }
+    .game-btn {
+      display: block;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #2a2a2a;
+      color: #007bff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      border: 1px solid #333;
+    }
+    .game-btn:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
-  <h1>Math Notes</h1>
-  
-  <div id="login-section">
-    <input type="password" id="passcode" placeholder="Enter PIN">
-    <button onclick="checkPin()">Unlock</button>
-  </div>
 
-  <div id="vault-content">
-    <h2>Select a File</h2>
-    <a href="play.html?game=mario" class="game-btn">Super Mario Bros.</a>
-    <a href="play.html?game=punchout" class="game-btn">Mike Tyson's Punch-Out!!</a>
-    <a href="play.html?game=tetris" class="game-btn">Tetris</a>
+  <div class="vault-card">
+    <h2>Math Notes</h2>
+    <div id="lock-screen">
+      <input type="password" id="passcode" placeholder="Enter PIN">
+      <button onclick="unlock()">Unlock</button>
+    </div>
+
+    <div id="vault-content" class="game-list">
+      <h3>Select File</h3>
+      <a class="game-btn" href="docs/project/play.html?game=mario">Super Mario Bros.</a>
+      <a class="game-btn" href="docs/project/play.html?game=punchout">Mike Tyson's Punch-Out!!</a>
+      <a class="game-btn" href="docs/project/play.html?game=tetris">Tetris</a>
+    </div>
   </div>
 
   <script>
-    function checkPin() {
-      if (document.getElementById('passcode').value === '0525') {
-        document.getElementById('login-section').style.display = 'none';
+    function unlock() {
+      const pin = document.getElementById('passcode').value;
+      if (pin === '0525') {
+        document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('vault-content').style.display = 'block';
       } else {
-        alert('Incorrect PIN');
+        alert('Incorrect Passcode');
       }
     }
   </script>
+
 </body>
 </html>
+
