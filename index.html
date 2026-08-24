@@ -3,84 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Vault</title>
+  <title>Vault Access</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      background-color: #121212;
+      background-color: #1c1c1e;
       color: #ffffff;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
     }
-    .vault-card {
-      background-color: #1e1e1e;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      text-align: center;
-      width: 320px;
-    }
-    input {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background: #2a2a2a;
-      color: white;
-      width: 80%;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
+
+    /* Modal / Container Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px 24px;
       width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
-    button:hover {
-      background-color: #0056b3;
+
+    .card h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .game-list {
-      display: none;
-      margin-top: 15px;
+
+    .card p {
+      color: #8e8e93;
+      font-size: 14px;
+      margin: 0 0 20px 0;
     }
-    .game-btn {
-      display: block;
+
+    /* Inputs & Buttons */
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    input::placeholder { color: #636366; }
+
+    button {
+      width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      background-color: #2a2a2a;
-      color: #007bff;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      border: 1px solid #333;
+      background: #007aff;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .game-btn:hover {
-      background-color: #333;
+
+    button:hover { background: #0062cc; }
+
+    /* Vault Interface */
+    #vault-content {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      padding: 40px 20px;
+    }
+
+    .vault-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .search-bar {
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto 30px auto;
+      display: block;
+      text-align: left;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .game-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 30px 20px;
+      text-decoration: none;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .game-card:hover {
+      border-color: #007aff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .game-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .game-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .game-subtitle {
+      color: #8e8e93;
+      font-size: 13px;
     }
   </style>
 </head>
 <body>
 
-  <div class="vault-card">
-    <h2>Math Notes</h2>
-    <div id="lock-screen">
-      <input type="password" id="passcode" placeholder="Enter PIN">
-      <button onclick="unlock()">Unlock</button>
-    </div>
+  <!-- Protected Access Modal -->
+  <div id="lock-screen" class="card">
+    <h2>🔒 Protected Access</h2>
+    <p>Enter passcode:</p>
+    <input type="password" id="passcode" placeholder="Passcode">
+    <button onclick="unlock()">Submit</button>
+  </div>
 
-    <div id="vault-content" class="game-list">
-      <h3>Select File</h3>
-      <a class="game-btn" href="docs/project/play.html?game=mario">Super Mario Bros.</a>
-      <a class="game-btn" href="docs/project/play.html?game=punchout">Mike Tyson's Punch-Out!!</a>
-      <a class="game-btn" href="docs/project/play.html?game=tetris">Tetris</a>
+  <!-- Main Vault Dashboard -->
+  <div id="vault-content">
+    <div class="vault-title">Vault Access</div>
+    <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
+    
+    <div class="game-grid" id="grid">
+      <a href="docs/project/play.html?game=mario" class="game-card">
+        <div class="game-icon">🍄</div>
+        <div class="game-title">Super Mario Bros.</div>
+        <div class="game-subtitle">NES Game</div>
+      </a>
+      <a href="docs/project/play.html?game=punchout" class="game-card">
+        <div class="game-icon">🥊</div>
+        <div class="game-title">Mike Tyson's Punch-Out!!</div>
+        <div class="game-subtitle">NES Game</div>
+      </a>
+      <a href="docs/project/play.html?game=tetris" class="game-card">
+        <div class="game-icon">🧩</div>
+        <div class="game-title">Tetris</div>
+        <div class="game-subtitle">NES Game</div>
+      </a>
     </div>
   </div>
 
@@ -92,6 +184,15 @@
         document.getElementById('vault-content').style.display = 'block';
       } else {
         alert('Incorrect Passcode');
+      }
+    }
+
+    function filterGames() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const cards = document.getElementsByClassName('game-card');
+      for (let i = 0; i < cards.length; i++) {
+        const title = cards[i].getElementsByClassName('game-title')[0].innerText.toLowerCase();
+        cards[i].style.display = title.includes(input) ? 'flex' : 'none';
       }
     }
   </script>
