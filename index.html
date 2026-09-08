@@ -18,8 +18,9 @@
       position: relative;
     }
 
-    /* Secret / Trap Button in Top Right Corner */
+    /* Trap Button (Hidden initially, shown only in Vault) */
     .trap-btn {
+      display: none;
       position: absolute;
       top: 16px;
       right: 16px;
@@ -168,8 +169,8 @@
 </head>
 <body>
 
-  <!-- Top Right Trap Button -->
-  <button class="trap-btn" onclick="closeTab()">⚠️ DO NOT PRESS</button>
+  <!-- Top Right Trap Button (Hidden on lock screen) -->
+  <button id="trap-button" class="trap-btn" onclick="closeTab()">⚠️ DO NOT PRESS</button>
 
   <!-- Protected Access Modal -->
   <div id="lock-screen" class="card">
@@ -255,27 +256,28 @@
 
   <script>
     let failedAttempts = 0;
+    const maxAttempts = 3;
 
     function unlock() {
       const pin = document.getElementById('passcode').value;
       if (pin === '0525') {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('vault-content').style.display = 'block';
+        document.getElementById('trap-button').style.display = 'block';
       } else {
         failedAttempts++;
-        if (failedAttempts >= 3) {
-          // Kicks them completely away on the 3rd wrong entry
-          window.location.href = "https://www.google.com";
+        const remaining = maxAttempts - failedAttempts;
+        if (remaining <= 0) {
+          window.location.replace("https://www.google.com");
         } else {
-          alert("Are you sure you know who Patrick is?");
+          alert(`Incorrect passcode. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`);
         }
       }
     }
 
     function closeTab() {
-      // Attempts to close tab; redirects to Google as fallback if blocked by browser
       window.close();
-      window.location.href = "https://www.google.com";
+      window.location.replace("https://www.google.com");
     }
 
     function filterGames() {
