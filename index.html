@@ -18,7 +18,7 @@
       position: relative;
     }
 
-    /* Trap Button (Hidden initially, shown only in Vault) */
+    /* Trap Button (Hidden on lock screen, shown only in Vault) */
     .trap-btn {
       display: none;
       position: absolute;
@@ -170,7 +170,7 @@
 <body>
 
   <!-- Top Right Trap Button (Hidden on lock screen) -->
-  <button id="trap-button" class="trap-btn" onclick="closeTab()">⚠️ DO NOT PRESS</button>
+  <button id="trap-button" class="trap-btn" onclick="triggerTrap()">⚠️ DO NOT PRESS</button>
 
   <!-- Protected Access Modal -->
   <div id="lock-screen" class="card">
@@ -255,6 +255,9 @@
   </div>
 
   <script>
+    // Direct link to your uploaded ImgBB image
+    const trapImageUrl = "https://i.ibb.co/Lf8Xbnp/image.jpg";
+
     let failedAttempts = 0;
     const maxAttempts = 3;
 
@@ -268,16 +271,15 @@
         failedAttempts++;
         const remaining = maxAttempts - failedAttempts;
         if (remaining <= 0) {
-          window.location.replace("https://www.google.com");
+          window.location.replace("about:blank");
         } else {
           alert(`Incorrect passcode. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`);
         }
       }
     }
 
-    function closeTab() {
-      window.close();
-      window.location.replace("https://www.google.com");
+    function triggerTrap() {
+      window.location.replace(trapImageUrl);
     }
 
     function filterGames() {
