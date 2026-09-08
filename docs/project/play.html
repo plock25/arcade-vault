@@ -28,6 +28,8 @@
     const gameChoice = params.get('game');
 
     let romPath = '';
+    let coreType = 'nes';
+
     if (gameChoice === 'mario') {
       romPath = 'mario.nes';
     } else if (gameChoice === 'punchout') {
@@ -54,11 +56,14 @@
       romPath = 'digdug.nes';
     } else if (gameChoice === 'galaga') {
       romPath = 'galaga.nes';
+    } else if (gameChoice === 'nrallyx') {
+      romPath = 'nrallyx.zip';
+      coreType = 'mame2003';
     }
 
     if (romPath) {
       window.EJS_player = '#game';
-      window.EJS_core = 'nes';
+      window.EJS_core = coreType;
       window.EJS_gameUrl = romPath;
       window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
     }
