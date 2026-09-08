@@ -15,6 +15,30 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    /* Secret / Trap Button in Top Right Corner */
+    .trap-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 59, 48, 0.15);
+      color: #ff453a;
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .trap-btn:hover {
+      background: rgba(255, 59, 48, 0.3);
+      border-color: #ff453a;
     }
 
     /* Modal / Container Cards */
@@ -61,7 +85,7 @@
 
     input::placeholder { color: #636366; }
 
-    button {
+    .submit-btn {
       width: 100%;
       padding: 12px;
       background: #007aff;
@@ -73,7 +97,7 @@
       cursor: pointer;
     }
 
-    button:hover { background: #0062cc; }
+    .submit-btn:hover { background: #0062cc; }
 
     /* Vault Interface */
     #vault-content {
@@ -144,12 +168,15 @@
 </head>
 <body>
 
+  <!-- Top Right Trap Button -->
+  <button class="trap-btn" onclick="closeTab()">⚠️ DO NOT PRESS</button>
+
   <!-- Protected Access Modal -->
   <div id="lock-screen" class="card">
     <h2>🔒 Protected Access</h2>
     <p>Enter passcode:</p>
     <input type="password" id="passcode" placeholder="Passcode">
-    <button onclick="unlock()">Submit</button>
+    <button class="submit-btn" onclick="unlock()">Submit</button>
   </div>
 
   <!-- Main Vault Dashboard -->
@@ -227,14 +254,28 @@
   </div>
 
   <script>
+    let failedAttempts = 0;
+
     function unlock() {
       const pin = document.getElementById('passcode').value;
       if (pin === '0525') {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('vault-content').style.display = 'block';
       } else {
-        alert('Are you sure you know who Patrick is?');
+        failedAttempts++;
+        if (failedAttempts >= 3) {
+          // Kicks them completely away on the 3rd wrong entry
+          window.location.href = "https://www.google.com";
+        } else {
+          alert("Are you sure you know who Patrick is?");
+        }
       }
+    }
+
+    function closeTab() {
+      // Attempts to close tab; redirects to Google as fallback if blocked by browser
+      window.close();
+      window.location.href = "https://www.google.com";
     }
 
     function filterGames() {
