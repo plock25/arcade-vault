@@ -213,7 +213,9 @@
       height: 70px;
     }
 
-    #dvd-logo path, #dvd-logo ellipse {
+    #dvd-logo path, 
+    #dvd-logo ellipse, 
+    #dvd-logo text {
       fill: #ff0055;
       transition: fill 0.1s ease;
     }
@@ -221,24 +223,20 @@
 </head>
 <body>
 
-  <!-- Authentic DVD Screensaver Overlay -->
+  <!-- Clean & Authentic DVD Video Logo Overlay -->
   <div id="screensaver">
     <svg id="dvd-logo" viewBox="0 0 300 150">
-      <!-- Disc Oval -->
-      <ellipse cx="150" cy="115" rx="110" ry="20" />
-      <ellipse cx="150" cy="115" rx="50" ry="9" fill="#000" />
-      
-      <!-- DVD Text -->
-      <path d="M 30,20 L 65,20 C 85,20 95,30 95,45 C 95,60 85,70 65,70 L 50,70 L 50,95 L 30,95 Z M 50,38 L 50,52 L 63,52 C 70,52 74,48 74,45 C 74,41 70,38 63,38 Z" />
-      <path d="M 100,20 L 120,20 L 138,75 L 156,20 L 176,20 L 148,95 L 128,95 Z" />
-      <path d="M 180,20 L 215,20 C 235,20 245,30 245,45 C 245,60 235,70 215,70 L 200,70 L 200,95 L 180,95 Z M 200,38 L 200,52 L 213,52 C 220,52 224,48 224,45 C 224,41 220,38 213,38 Z" />
-      
-      <!-- VIDEO Text -->
-      <path d="M 65,122 L 72,122 L 78,138 L 84,122 L 91,122 L 82,142 L 74,142 Z" />
-      <path d="M 98,122 L 105,122 L 105,142 L 98,142 Z" />
-      <path d="M 112,122 L 124,122 C 132,122 137,126 137,132 C 137,138 132,142 L 124,142 L 112,142 Z M 119,127 L 119,137 L 124,137 C 127,137 130,135 130,132 C 130,129 127,127 124,127 Z" />
-      <path d="M 144,122 L 160,122 L 160,127 L 151,127 L 151,129 L 158,129 L 158,134 L 151,134 L 151,137 L 160,137 L 160,142 L 144,142 Z" />
-      <path d="M 166,132 C 166,125 172,121 180,121 C 188,121 194,125 194,132 C 194,139 188,143 180,143 C 172,143 166,139 166,132 Z M 173,132 C 173,136 176,138 180,138 C 184,138 187,136 187,132 C 187,128 184,126 180,126 C 176,126 173,128 173,132 Z" />
+      <g>
+        <!-- DVD Main Text -->
+        <text x="18" y="72" font-family="'Arial Black', 'Helvetica Neue', sans-serif" font-size="70" font-weight="900" font-style="italic" letter-spacing="-2">DVD</text>
+        
+        <!-- Bottom Disc Oval -->
+        <ellipse cx="150" cy="100" rx="130" ry="16" />
+        <ellipse cx="150" cy="100" rx="65" ry="8" fill="#000" />
+        
+        <!-- VIDEO Subtext -->
+        <text x="75" y="132" font-family="'Arial', 'Helvetica', sans-serif" font-size="22" font-weight="900" letter-spacing="12">VIDEO</text>
+      </g>
     </svg>
   </div>
 
@@ -329,7 +327,7 @@
         <div class="game-subtitle">NES Game</div>
       </a>
       <a onclick="launchGameWindow('nrallyx', 'New Rally-X')" class="game-card">
-        <img src="covers/nrallyx.jpg" class="game-cover" alt="New Rally-X">
+        <img src="covers/nrallyx.jpg" class="game-card" alt="New Rally-X">
         <div class="game-title">New Rally-X</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -339,7 +337,7 @@
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a onclick="launchGameWindow('pacman', 'Pac-Man')" class="game-card">
-        <img src="covers/pacman.jpg" class="game-cover" alt="Pac-Man">
+        <img src="covers/pacman.jpg" class="game-card" alt="Pac-Man">
         <div class="game-title">Pac-Man</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -487,10 +485,10 @@
 
     function changeColor() {
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      const paths = logo.querySelectorAll('path, ellipse');
-      paths.forEach(p => {
-        if (p.getAttribute('fill') !== '#000') {
-          p.style.fill = randomColor;
+      const elements = logo.querySelectorAll('path, ellipse, text');
+      elements.forEach(el => {
+        if (el.getAttribute('fill') !== '#000') {
+          el.style.fill = randomColor;
         }
       });
     }
