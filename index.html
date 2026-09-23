@@ -207,37 +207,96 @@
       z-index: 9999;
     }
 
-    #dvd-logo {
+    #dvd-logo-container {
       position: absolute;
-      width: 140px;
-      height: 70px;
+      width: 150px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    #dvd-logo path, 
-    #dvd-logo ellipse, 
-    #dvd-logo text {
-      fill: #ff0055;
-      transition: fill 0.1s ease;
+    .dvd-text-group {
+      display: flex;
+      gap: 2px;
+      transform: skewX(-14deg);
+    }
+
+    .dvd-letter-d {
+      width: 38px;
+      height: 40px;
+      background: #ff0055;
+      border-radius: 0 20px 20px 0;
+      position: relative;
+      transition: background 0.1s ease;
+    }
+
+    .dvd-letter-d::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 16px;
+      height: 20px;
+      background: #000000;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .dvd-letter-v {
+      width: 38px;
+      height: 40px;
+      background: #ff0055;
+      clip-path: polygon(0 0, 28% 0, 50% 70%, 72% 0, 100% 0, 65% 100%, 35% 100%);
+      transition: background 0.1s ease;
+    }
+
+    .dvd-disc-base {
+      width: 135px;
+      height: 18px;
+      background: #ff0055;
+      border-radius: 50%;
+      margin-top: -6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.1s ease;
+    }
+
+    .dvd-disc-hole {
+      width: 55px;
+      height: 7px;
+      background: #000000;
+      border-radius: 50%;
+    }
+
+    .dvd-subtext {
+      color: #ff0055;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 7px;
+      margin-top: 2px;
+      margin-left: 6px;
+      transition: color 0.1s ease;
     }
   </style>
 </head>
 <body>
 
-  <!-- Clean & Authentic DVD Video Logo Overlay -->
+  <!-- Clean Pixel-Accurate DVD Video Logo Overlay -->
   <div id="screensaver">
-    <svg id="dvd-logo" viewBox="0 0 300 150">
-      <g>
-        <!-- DVD Main Text -->
-        <text x="18" y="72" font-family="'Arial Black', 'Helvetica Neue', sans-serif" font-size="70" font-weight="900" font-style="italic" letter-spacing="-2">DVD</text>
-        
-        <!-- Bottom Disc Oval -->
-        <ellipse cx="150" cy="100" rx="130" ry="16" />
-        <ellipse cx="150" cy="100" rx="65" ry="8" fill="#000" />
-        
-        <!-- VIDEO Subtext -->
-        <text x="75" y="132" font-family="'Arial', 'Helvetica', sans-serif" font-size="22" font-weight="900" letter-spacing="12">VIDEO</text>
-      </g>
-    </svg>
+    <div id="dvd-logo-container">
+      <div class="dvd-text-group">
+        <div class="dvd-letter-d dvd-fill"></div>
+        <div class="dvd-letter-v dvd-fill"></div>
+        <div class="dvd-letter-d dvd-fill"></div>
+      </div>
+      <div class="dvd-disc-base dvd-fill">
+        <div class="dvd-disc-hole"></div>
+      </div>
+      <div class="dvd-subtext">VIDEO</div>
+    </div>
   </div>
 
   <!-- Top Right Trap Button -->
@@ -327,7 +386,7 @@
         <div class="game-subtitle">NES Game</div>
       </a>
       <a onclick="launchGameWindow('nrallyx', 'New Rally-X')" class="game-card">
-        <img src="covers/nrallyx.jpg" class="game-card" alt="New Rally-X">
+        <img src="covers/nrallyx.jpg" class="game-cover" alt="New Rally-X">
         <div class="game-title">New Rally-X</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -337,7 +396,7 @@
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a onclick="launchGameWindow('pacman', 'Pac-Man')" class="game-card">
-        <img src="covers/pacman.jpg" class="game-card" alt="Pac-Man">
+        <img src="covers/pacman.jpg" class="game-cover" alt="Pac-Man">
         <div class="game-title">Pac-Man</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -476,21 +535,21 @@
     let cornerInterval;
 
     const screensaver = document.getElementById('screensaver');
-    const logo = document.getElementById('dvd-logo');
+    const logoContainer = document.getElementById('dvd-logo-container');
 
     let x = 100, y = 100;
     let dx = 3, dy = 3;
-    const logoWidth = 140, logoHeight = 70;
+    const logoWidth = 150, logoHeight = 80;
     const colors = ['#ff0055', '#00ffcc', '#ffcc00', '#0099ff', '#ff6600', '#cc00ff', '#33ff33'];
 
     function changeColor() {
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      const elements = logo.querySelectorAll('path, ellipse, text');
-      elements.forEach(el => {
-        if (el.getAttribute('fill') !== '#000') {
-          el.style.fill = randomColor;
-        }
+      const fillElements = logoContainer.querySelectorAll('.dvd-fill');
+      fillElements.forEach(el => {
+        el.style.background = randomColor;
       });
+      const subtext = logoContainer.querySelector('.dvd-subtext');
+      if (subtext) subtext.style.color = randomColor;
     }
 
     function updateDVD() {
@@ -515,8 +574,8 @@
 
       if (bounced) changeColor();
 
-      logo.style.left = x + 'px';
-      logo.style.top = y + 'px';
+      logoContainer.style.left = x + 'px';
+      logoContainer.style.top = y + 'px';
 
       // Keep running the render frame in an infinite loop
       animationFrameId = requestAnimationFrame(updateDVD);
