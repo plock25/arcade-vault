@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website</title>
+  <title>Patrick's Website</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     * { box-sizing: border-box; }
@@ -183,7 +183,7 @@
 
   <!-- Main Vault Dashboard -->
   <div id="vault-content">
-    <div class="vault-title">Retro Games</div>
+    <div class="vault-title">Patrick's Games</div>
     <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
     
     <div class="game-grid" id="grid">
@@ -321,6 +321,13 @@
         cards[i].style.display = title.includes(input) ? 'flex' : 'none';
       }
     }
+
+    // Panic Keybind: Instant redirect to Google Classroom on Ctrl + Shift + Alt
+    window.addEventListener('keydown', function(event) {
+      if (event.ctrlKey && event.shiftKey && event.altKey) {
+        window.location.replace('https://classroom.google.com');
+      }
+    });
   </script>
 
 </body>
