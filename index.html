@@ -19,7 +19,7 @@
       position: relative;
     }
 
-    /* Trap Button (Hidden on lock screen, shown only in Vault) */
+    /* Top Right Trap Button (Hidden on lock screen) */
     .trap-btn {
       display: none;
       position: absolute;
@@ -125,7 +125,7 @@
 
     .search-bar {
       flex: 1;
-      text-align: left;
+      text-align: left !important;
     }
 
     .random-btn {
@@ -178,7 +178,10 @@
       object-fit: cover;
       border-radius: 8px;
       margin-bottom: 12px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .game-title {
@@ -213,102 +216,102 @@
     
     <div class="controls-container">
       <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
-      <button class="random-btn" onclick="playRandomGame()">🎲 Surprise Arcade</button>
+      <button class="random-btn" onclick="playRandomGame()">🎲 Random Game</button>
     </div>
     
     <div class="game-grid" id="grid">
       <a href="docs/project/play.html?game=mario" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.jpg" class="game-cover" alt="Super Mario Bros.">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1tnw.jpg" class="game-cover" alt="Super Mario Bros." onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Super+Mario+Bros.';">
         <div class="game-title">Super Mario Bros.</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=punchout" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Punch-Out%21%21_NES_box_art.jpg" class="game-cover" alt="Mike Tyson's Punch-Out!!">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co252a.jpg" class="game-cover" alt="Mike Tyson's Punch-Out!!" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Punch-Out!!';">
         <div class="game-title">Mike Tyson's Punch-Out!!</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=tetris" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/7/7d/Tetris_NES_cover_art.jpg" class="game-cover" alt="Tetris">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co238c.jpg" class="game-cover" alt="Tetris" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Tetris';">
         <div class="game-title">Tetris</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=zelda" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Legend_of_Zelda_Coverart.png" class="game-cover" alt="The Legend of Zelda">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1tr1.jpg" class="game-cover" alt="The Legend of Zelda" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Zelda';">
         <div class="game-title">The Legend of Zelda</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=contra" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/f/f7/Contra_cover.jpg" class="game-cover" alt="Contra">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co251w.jpg" class="game-cover" alt="Contra" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Contra';">
         <div class="game-title">Contra</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=donkeykong" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Donkey_Kong_arcade_flyer.jpg" class="game-cover" alt="Donkey Kong">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1tly.jpg" class="game-cover" alt="Donkey Kong" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Donkey+Kong';">
         <div class="game-title">Donkey Kong</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=megaman" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/d/d6/Megaman_nes_cover.jpg" class="game-cover" alt="Mega Man">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2mhw.jpg" class="game-cover" alt="Mega Man" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Mega+Man';">
         <div class="game-title">Mega Man</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=metroid" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/3/3d/Metroid_boxart.jpg" class="game-cover" alt="Metroid">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2msk.jpg" class="game-cover" alt="Metroid" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Metroid';">
         <div class="game-title">Metroid</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=kirby" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/0/07/Kirby%27s_Adventure_Box_Art.png" class="game-cover" alt="Kirby's Adventure">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmd.jpg" class="game-cover" alt="Kirby's Adventure" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Kirby';">
         <div class="game-title">Kirby's Adventure</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=excitebike" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/5/52/Excitebike_box.jpg" class="game-cover" alt="Excitebike">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v6a.jpg" class="game-cover" alt="Excitebike" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Excitebike';">
         <div class="game-title">Excitebike</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=paperboy" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/1/1a/Paperboy_cover.jpg" class="game-cover" alt="Paperboy">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2525.jpg" class="game-cover" alt="Paperboy" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Paperboy';">
         <div class="game-title">Paperboy</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=digdug" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/2/23/DigDugAtari5200BoxArt.jpg" class="game-cover" alt="Dig Dug">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v95.jpg" class="game-cover" alt="Dig Dug" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Dig+Dug';">
         <div class="game-title">Dig Dug</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=galaga" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/f/fb/Galaga_arcade_flyer.jpg" class="game-cover" alt="Galaga">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9b.jpg" class="game-cover" alt="Galaga" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Galaga';">
         <div class="game-title">Galaga</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=nrallyx" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/3/30/New_Rally-X_arcade_flyer.jpg" class="game-cover" alt="New Rally-X">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2k63.jpg" class="game-cover" alt="New Rally-X" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=New+Rally-X';">
         <div class="game-title">New Rally-X</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=asteroid" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/c/c8/Asteroids_arcade_flyer.jpg" class="game-cover" alt="Asteroids">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v7c.jpg" class="game-cover" alt="Asteroids" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Asteroids';">
         <div class="game-title">Asteroids</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=pacman" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/0/03/Pac-Man_flyer_art.jpg" class="game-cover" alt="Pac-Man">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" class="game-cover" alt="Pac-Man" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Pac-Man';">
         <div class="game-title">Pac-Man</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=frogger" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/5/52/Frogger_arcade_flyer.jpg" class="game-cover" alt="Frogger">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2529.jpg" class="game-cover" alt="Frogger" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Frogger';">
         <div class="game-title">Frogger</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=centipede" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/a/a2/Centipede_arcade_flyer.jpg" class="game-cover" alt="Centipede">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1v8x.jpg" class="game-cover" alt="Centipede" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Centipede';">
         <div class="game-title">Centipede</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=invaders" class="game-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/SpaceInvadersFlyer.jpg" class="game-cover" alt="Space Invaders">
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co252b.jpg" class="game-cover" alt="Space Invaders" onerror="this.onerror=null;this.src='https://placehold.co/200x280/1c1c1e/ffffff?text=Space+Invaders';">
         <div class="game-title">Space Invaders</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -316,7 +319,7 @@
   </div>
 
   <script>
-    // Direct link to your MyImgs asset
+    // Direct link to your trap image asset
     const trapImageUrl = "https://myimgs.org/storage/images/35417/IMG_1310.jpg";
 
     let failedAttempts = 0;
