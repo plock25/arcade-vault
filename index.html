@@ -209,19 +209,36 @@
 
     #dvd-logo {
       position: absolute;
-      width: 120px;
-      height: 60px;
+      width: 140px;
+      height: 70px;
+    }
+
+    #dvd-logo path, #dvd-logo ellipse {
       fill: #ff0055;
+      transition: fill 0.1s ease;
     }
   </style>
 </head>
 <body>
 
-  <!-- DVD Screensaver Overlay -->
+  <!-- Authentic DVD Screensaver Overlay -->
   <div id="screensaver">
-    <svg id="dvd-logo" viewBox="0 0 100 50">
-      <ellipse cx="50" cy="25" rx="45" ry="20" />
-      <text x="50" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#000000" text-anchor="middle">DVD</text>
+    <svg id="dvd-logo" viewBox="0 0 300 150">
+      <!-- Disc Oval -->
+      <ellipse cx="150" cy="115" rx="110" ry="20" />
+      <ellipse cx="150" cy="115" rx="50" ry="9" fill="#000" />
+      
+      <!-- DVD Text -->
+      <path d="M 30,20 L 65,20 C 85,20 95,30 95,45 C 95,60 85,70 65,70 L 50,70 L 50,95 L 30,95 Z M 50,38 L 50,52 L 63,52 C 70,52 74,48 74,45 C 74,41 70,38 63,38 Z" />
+      <path d="M 100,20 L 120,20 L 138,75 L 156,20 L 176,20 L 148,95 L 128,95 Z" />
+      <path d="M 180,20 L 215,20 C 235,20 245,30 245,45 C 245,60 235,70 215,70 L 200,70 L 200,95 L 180,95 Z M 200,38 L 200,52 L 213,52 C 220,52 224,48 224,45 C 224,41 220,38 213,38 Z" />
+      
+      <!-- VIDEO Text -->
+      <path d="M 65,122 L 72,122 L 78,138 L 84,122 L 91,122 L 82,142 L 74,142 Z" />
+      <path d="M 98,122 L 105,122 L 105,142 L 98,142 Z" />
+      <path d="M 112,122 L 124,122 C 132,122 137,126 137,132 C 137,138 132,142 L 124,142 L 112,142 Z M 119,127 L 119,137 L 124,137 C 127,137 130,135 130,132 C 130,129 127,127 124,127 Z" />
+      <path d="M 144,122 L 160,122 L 160,127 L 151,127 L 151,129 L 158,129 L 158,134 L 151,134 L 151,137 L 160,137 L 160,142 L 144,142 Z" />
+      <path d="M 166,132 C 166,125 172,121 180,121 C 188,121 194,125 194,132 C 194,139 188,143 180,143 C 172,143 166,139 166,132 Z M 173,132 C 173,136 176,138 180,138 C 184,138 187,136 187,132 C 187,128 184,126 180,126 C 176,126 173,128 173,132 Z" />
     </svg>
   </div>
 
@@ -382,14 +399,15 @@
       window.location.replace(trapImageUrl);
     }
 
-    // --- App Window Launcher ---
+    // --- Clean App Window Launcher ---
     function launchGameWindow(gameId, gameTitle) {
       const url = `docs/project/play.html?game=${gameId}`;
       const width = 900;
       const height = 675;
       const left = (window.screen.width / 2) - (width / 2);
       const top = (window.screen.height / 2) - (height / 2);
-      const windowFeatures = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,location=no`;
+
+      const windowFeatures = `popup=yes,width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=no`;
 
       window.open(url, gameTitle, windowFeatures);
     }
@@ -453,7 +471,7 @@
       }
     });
 
-    // --- DVD Screensaver Logic ---
+    // --- DVD Screensaver Infinite Loop Logic ---
     let idleTimer;
     let screensaverActive = false;
     let animationFrameId;
@@ -464,15 +482,22 @@
 
     let x = 100, y = 100;
     let dx = 3, dy = 3;
-    const logoWidth = 120, logoHeight = 60;
-    const colors = ['#ff0055', '#00ffcc', '#ffcc00', '#0099ff', '#ff6600', '#cc00ff'];
+    const logoWidth = 140, logoHeight = 70;
+    const colors = ['#ff0055', '#00ffcc', '#ffcc00', '#0099ff', '#ff6600', '#cc00ff', '#33ff33'];
 
     function changeColor() {
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      logo.style.fill = randomColor;
+      const paths = logo.querySelectorAll('path, ellipse');
+      paths.forEach(p => {
+        if (p.getAttribute('fill') !== '#000') {
+          p.style.fill = randomColor;
+        }
+      });
     }
 
     function updateDVD() {
+      if (!screensaverActive) return;
+
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
 
@@ -495,14 +520,13 @@
       logo.style.left = x + 'px';
       logo.style.top = y + 'px';
 
-      if (screensaverActive) {
-        animationFrameId = requestAnimationFrame(updateDVD);
-      }
+      // Keep running the render frame in an infinite loop
+      animationFrameId = requestAnimationFrame(updateDVD);
     }
 
     function forceCornerHit() {
       if (!screensaverActive) return;
-      // Snap DVD logo exactly to top-right corner and change color
+      // Force trajectory directly into top-right corner
       x = window.innerWidth - logoWidth;
       y = 0;
       dx = -Math.abs(dx);
@@ -511,14 +535,17 @@
     }
 
     function startScreensaver() {
-      if (!isUnlocked) return;
+      if (!isUnlocked || screensaverActive) return;
       screensaverActive = true;
       screensaver.style.display = 'block';
+
       x = Math.random() * (window.innerWidth - logoWidth);
       y = Math.random() * (window.innerHeight - logoHeight);
-      updateDVD();
 
-      // Trigger exact corner hit every 2 minutes (120000ms) while screensaver is active
+      // Start infinite render loop
+      animationFrameId = requestAnimationFrame(updateDVD);
+
+      // Trigger exact corner hit every 2 minutes (120000ms)
       cornerInterval = setInterval(forceCornerHit, 120000);
     }
 
@@ -539,7 +566,6 @@
       }
     }
 
-    // Reset idle timer on user activity
     ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(eventType => {
       window.addEventListener(eventType, resetIdleTimer, true);
     });
