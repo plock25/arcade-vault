@@ -81,7 +81,6 @@
       color: #ffffff;
       font-size: 15px;
       outline: none;
-      margin-bottom: 16px;
       text-align: center;
     }
 
@@ -97,6 +96,7 @@
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
+      margin-top: 16px;
     }
 
     .submit-btn:hover { background: #0062cc; }
@@ -105,7 +105,7 @@
     #vault-content {
       display: none;
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
       padding: 40px 20px;
     }
 
@@ -116,18 +116,39 @@
       margin-bottom: 24px;
     }
 
-    .search-bar {
-      width: 100%;
-      max-width: 450px;
+    .controls-container {
+      display: flex;
+      gap: 12px;
+      max-width: 500px;
       margin: 0 auto 30px auto;
-      display: block;
+    }
+
+    .search-bar {
+      flex: 1;
       text-align: left;
+    }
+
+    .random-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .random-btn:hover {
+      background: #007aff;
+      border-color: #007aff;
     }
 
     .game-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
       width: 100%;
     }
 
@@ -135,36 +156,41 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      padding: 30px 20px;
+      padding: 12px;
       text-decoration: none;
       color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+      overflow: hidden;
     }
 
     .game-card:hover {
       border-color: #007aff;
+      transform: translateY(-4px);
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .game-icon {
-      font-size: 40px;
+    .game-cover {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
       margin-bottom: 12px;
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .game-title {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 15px;
       margin-bottom: 4px;
       text-align: center;
     }
 
     .game-subtitle {
       color: #8e8e93;
-      font-size: 13px;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -184,101 +210,105 @@
   <!-- Main Vault Dashboard -->
   <div id="vault-content">
     <div class="vault-title">Patrick's Games</div>
-    <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
+    
+    <div class="controls-container">
+      <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
+      <button class="random-btn" onclick="playRandomGame()">🎲 Surprise Arcade</button>
+    </div>
     
     <div class="game-grid" id="grid">
       <a href="docs/project/play.html?game=mario" class="game-card">
-        <div class="game-icon">🍄</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.jpg" class="game-cover" alt="Super Mario Bros.">
         <div class="game-title">Super Mario Bros.</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=punchout" class="game-card">
-        <div class="game-icon">🥊</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Punch-Out%21%21_NES_box_art.jpg" class="game-cover" alt="Mike Tyson's Punch-Out!!">
         <div class="game-title">Mike Tyson's Punch-Out!!</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=tetris" class="game-card">
-        <div class="game-icon">🧩</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/7/7d/Tetris_NES_cover_art.jpg" class="game-cover" alt="Tetris">
         <div class="game-title">Tetris</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=zelda" class="game-card">
-        <div class="game-icon">🗡️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Legend_of_Zelda_Coverart.png" class="game-cover" alt="The Legend of Zelda">
         <div class="game-title">The Legend of Zelda</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=contra" class="game-card">
-        <div class="game-icon">💥</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/f/f7/Contra_cover.jpg" class="game-cover" alt="Contra">
         <div class="game-title">Contra</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=donkeykong" class="game-card">
-        <div class="game-icon">🛢️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Donkey_Kong_arcade_flyer.jpg" class="game-cover" alt="Donkey Kong">
         <div class="game-title">Donkey Kong</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=megaman" class="game-card">
-        <div class="game-icon">🤖</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/d/d6/Megaman_nes_cover.jpg" class="game-cover" alt="Mega Man">
         <div class="game-title">Mega Man</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=metroid" class="game-card">
-        <div class="game-icon">👽</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/3/3d/Metroid_boxart.jpg" class="game-cover" alt="Metroid">
         <div class="game-title">Metroid</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=kirby" class="game-card">
-        <div class="game-icon">⭐️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/07/Kirby%27s_Adventure_Box_Art.png" class="game-cover" alt="Kirby's Adventure">
         <div class="game-title">Kirby's Adventure</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=excitebike" class="game-card">
-        <div class="game-icon">🏍️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/52/Excitebike_box.jpg" class="game-cover" alt="Excitebike">
         <div class="game-title">Excitebike</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=paperboy" class="game-card">
-        <div class="game-icon">🗞️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/1/1a/Paperboy_cover.jpg" class="game-cover" alt="Paperboy">
         <div class="game-title">Paperboy</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=digdug" class="game-card">
-        <div class="game-icon">⛏️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/2/23/DigDugAtari5200BoxArt.jpg" class="game-cover" alt="Dig Dug">
         <div class="game-title">Dig Dug</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=galaga" class="game-card">
-        <div class="game-icon">🚀</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/f/fb/Galaga_arcade_flyer.jpg" class="game-cover" alt="Galaga">
         <div class="game-title">Galaga</div>
         <div class="game-subtitle">NES Game</div>
       </a>
       <a href="docs/project/play.html?game=nrallyx" class="game-card">
-        <div class="game-icon">🏎️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/3/30/New_Rally-X_arcade_flyer.jpg" class="game-cover" alt="New Rally-X">
         <div class="game-title">New Rally-X</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=asteroid" class="game-card">
-        <div class="game-icon">☄️</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/c/c8/Asteroids_arcade_flyer.jpg" class="game-cover" alt="Asteroids">
         <div class="game-title">Asteroids</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=pacman" class="game-card">
-        <div class="game-icon">🟡</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/03/Pac-Man_flyer_art.jpg" class="game-cover" alt="Pac-Man">
         <div class="game-title">Pac-Man</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=frogger" class="game-card">
-        <div class="game-icon">🐸</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/52/Frogger_arcade_flyer.jpg" class="game-cover" alt="Frogger">
         <div class="game-title">Frogger</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=centipede" class="game-card">
-        <div class="game-icon">🐛</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/a/a2/Centipede_arcade_flyer.jpg" class="game-cover" alt="Centipede">
         <div class="game-title">Centipede</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
       <a href="docs/project/play.html?game=invaders" class="game-card">
-        <div class="game-icon">👾</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/SpaceInvadersFlyer.jpg" class="game-cover" alt="Space Invaders">
         <div class="game-title">Space Invaders</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
@@ -320,6 +350,14 @@
         const title = cards[i].getElementsByClassName('game-title')[0].innerText.toLowerCase();
         cards[i].style.display = title.includes(input) ? 'flex' : 'none';
       }
+    }
+
+    function playRandomGame() {
+      const cards = document.getElementsByClassName('game-card');
+      if (cards.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * cards.length);
+      const randomHref = cards[randomIndex].getAttribute('href');
+      window.location.href = randomHref;
     }
 
     // Panic Keybind: Instant redirect to Google Classroom on Ctrl + Shift + Alt
