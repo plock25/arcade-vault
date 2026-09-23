@@ -36,6 +36,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       transition: background 0.2s, border-color 0.2s;
+      z-index: 10;
     }
 
     .trap-btn:hover {
@@ -164,6 +165,7 @@
       align-items: center;
       transition: border-color 0.2s, transform 0.2s, background 0.2s;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .game-card:hover {
@@ -192,11 +194,38 @@
       color: #8e8e93;
       font-size: 12px;
     }
+
+    /* DVD Screensaver Overlay */
+    #screensaver {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000000;
+      z-index: 9999;
+    }
+
+    #dvd-logo {
+      position: absolute;
+      width: 120px;
+      height: 60px;
+      fill: #ff0055;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Right Trap Button (Hidden on lock screen) -->
+  <!-- DVD Screensaver Overlay -->
+  <div id="screensaver">
+    <svg id="dvd-logo" viewBox="0 0 100 50">
+      <ellipse cx="50" cy="25" rx="45" ry="20" />
+      <text x="50" y="30" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#000000" text-anchor="middle">DVD</text>
+    </svg>
+  </div>
+
+  <!-- Top Right Trap Button -->
   <button id="trap-button" class="trap-btn" onclick="triggerTrap()">⚠️ DO NOT PRESS</button>
 
   <!-- Protected Access Modal -->
@@ -204,7 +233,7 @@
     <h2>🔒 Protected Access</h2>
     <p>Enter passcode:</p>
     <input type="password" id="passcode" placeholder="Passcode">
-    <button class="submit-btn" onclick="unlock()">Submit</button>
+    <button class="submit-btn" onclick="checkPasscode()">Submit</button>
   </div>
 
   <!-- Main Vault Dashboard -->
@@ -217,97 +246,97 @@
     </div>
     
     <div class="game-grid" id="grid">
-      <a href="docs/project/play.html?game=mario" class="game-card">
+      <a onclick="launchGameWindow('mario', 'Super Mario Bros.')" class="game-card">
         <img src="covers/mario.jpg" class="game-cover" alt="Super Mario Bros.">
         <div class="game-title">Super Mario Bros.</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=punchout" class="game-card">
+      <a onclick="launchGameWindow('punchout', 'Mike Tyson\'s Punch-Out!!')" class="game-card">
         <img src="covers/punchout.jpg" class="game-cover" alt="Mike Tyson's Punch-Out!!">
         <div class="game-title">Mike Tyson's Punch-Out!!</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=tetris" class="game-card">
+      <a onclick="launchGameWindow('tetris', 'Tetris')" class="game-card">
         <img src="covers/tetris.jpg" class="game-cover" alt="Tetris">
         <div class="game-title">Tetris</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=zelda" class="game-card">
+      <a onclick="launchGameWindow('zelda', 'The Legend of Zelda')" class="game-card">
         <img src="covers/zelda.jpg" class="game-cover" alt="The Legend of Zelda">
         <div class="game-title">The Legend of Zelda</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=contra" class="game-card">
+      <a onclick="launchGameWindow('contra', 'Contra')" class="game-card">
         <img src="covers/contra.jpg" class="game-cover" alt="Contra">
         <div class="game-title">Contra</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=donkeykong" class="game-card">
+      <a onclick="launchGameWindow('donkeykong', 'Donkey Kong')" class="game-card">
         <img src="covers/donkeykong.jpg" class="game-cover" alt="Donkey Kong">
         <div class="game-title">Donkey Kong</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=megaman" class="game-card">
+      <a onclick="launchGameWindow('megaman', 'Mega Man')" class="game-card">
         <img src="covers/megaman.jpg" class="game-cover" alt="Mega Man">
         <div class="game-title">Mega Man</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=metroid" class="game-card">
+      <a onclick="launchGameWindow('metroid', 'Metroid')" class="game-card">
         <img src="covers/metroid.jpg" class="game-cover" alt="Metroid">
         <div class="game-title">Metroid</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=kirby" class="game-card">
+      <a onclick="launchGameWindow('kirby', 'Kirby\'s Adventure')" class="game-card">
         <img src="covers/kirby.jpg" class="game-cover" alt="Kirby's Adventure">
         <div class="game-title">Kirby's Adventure</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=excitebike" class="game-card">
+      <a onclick="launchGameWindow('excitebike', 'Excitebike')" class="game-card">
         <img src="covers/excitebike.jpg" class="game-cover" alt="Excitebike">
         <div class="game-title">Excitebike</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=paperboy" class="game-card">
+      <a onclick="launchGameWindow('paperboy', 'Paperboy')" class="game-card">
         <img src="covers/paperboy.jpg" class="game-cover" alt="Paperboy">
         <div class="game-title">Paperboy</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=digdug" class="game-card">
+      <a onclick="launchGameWindow('digdug', 'Dig Dug')" class="game-card">
         <img src="covers/digdug.jpg" class="game-cover" alt="Dig Dug">
         <div class="game-title">Dig Dug</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=galaga" class="game-card">
+      <a onclick="launchGameWindow('galaga', 'Galaga')" class="game-card">
         <img src="covers/galaga.jpg" class="game-cover" alt="Galaga">
         <div class="game-title">Galaga</div>
         <div class="game-subtitle">NES Game</div>
       </a>
-      <a href="docs/project/play.html?game=nrallyx" class="game-card">
+      <a onclick="launchGameWindow('nrallyx', 'New Rally-X')" class="game-card">
         <img src="covers/nrallyx.jpg" class="game-cover" alt="New Rally-X">
         <div class="game-title">New Rally-X</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
-      <a href="docs/project/play.html?game=asteroid" class="game-card">
+      <a onclick="launchGameWindow('asteroid', 'Asteroids')" class="game-card">
         <img src="covers/asteroids.jpg" class="game-cover" alt="Asteroids">
         <div class="game-title">Asteroids</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
-      <a href="docs/project/play.html?game=pacman" class="game-card">
+      <a onclick="launchGameWindow('pacman', 'Pac-Man')" class="game-card">
         <img src="covers/pacman.jpg" class="game-cover" alt="Pac-Man">
         <div class="game-title">Pac-Man</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
-      <a href="docs/project/play.html?game=frogger" class="game-card">
+      <a onclick="launchGameWindow('frogger', 'Frogger')" class="game-card">
         <img src="covers/frogger.jpg" class="game-cover" alt="Frogger">
         <div class="game-title">Frogger</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
-      <a href="docs/project/play.html?game=centipede" class="game-card">
+      <a onclick="launchGameWindow('centipede', 'Centipede')" class="game-card">
         <img src="covers/centipede.jpg" class="game-cover" alt="Centipede">
         <div class="game-title">Centipede</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
-      <a href="docs/project/play.html?game=invaders" class="game-card">
+      <a onclick="launchGameWindow('invaders', 'Space Invaders')" class="game-card">
         <img src="covers/invaders.jpg" class="game-cover" alt="Space Invaders">
         <div class="game-title">Space Invaders</div>
         <div class="game-subtitle">Arcade Game</div>
@@ -317,14 +346,17 @@
 
   <script>
     const trapImageUrl = "https://myimgs.org/storage/images/35417/IMG_1310.jpg";
-
     let failedAttempts = 0;
     const maxAttempts = 3;
+    let isUnlocked = false;
 
+    // --- Unlock Mechanics ---
     function unlock() {
+      isUnlocked = true;
       document.getElementById('lock-screen').style.display = 'none';
       document.getElementById('vault-content').style.display = 'block';
       document.getElementById('trap-button').style.display = 'block';
+      resetIdleTimer();
     }
 
     function checkPasscode() {
@@ -342,16 +374,24 @@
       }
     }
 
-    // Passcode Enter key support
     document.getElementById('passcode').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') checkPasscode();
     });
 
-    // Override button onclick to use checkPasscode
-    document.querySelector('.submit-btn').setAttribute('onclick', 'checkPasscode()');
-
     function triggerTrap() {
       window.location.replace(trapImageUrl);
+    }
+
+    // --- App Window Launcher ---
+    function launchGameWindow(gameId, gameTitle) {
+      const url = `docs/project/play.html?game=${gameId}`;
+      const width = 900;
+      const height = 675;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+      const windowFeatures = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=no,status=no,toolbar=no,menubar=no,location=no`;
+
+      window.open(url, gameTitle, windowFeatures);
     }
 
     function filterGames() {
@@ -364,30 +404,41 @@
     }
 
     function playRandomGame() {
-      const cards = document.getElementsByClassName('game-card');
-      if (cards.length === 0) return;
-      const randomIndex = Math.floor(Math.random() * cards.length);
-      const randomHref = cards[randomIndex].getAttribute('href');
-      window.location.href = randomHref;
+      const games = [
+        { id: 'mario', title: 'Super Mario Bros.' },
+        { id: 'punchout', title: "Mike Tyson's Punch-Out!!" },
+        { id: 'tetris', title: 'Tetris' },
+        { id: 'zelda', title: 'The Legend of Zelda' },
+        { id: 'contra', title: 'Contra' },
+        { id: 'donkeykong', title: 'Donkey Kong' },
+        { id: 'megaman', title: 'Mega Man' },
+        { id: 'metroid', title: 'Metroid' },
+        { id: 'kirby', title: "Kirby's Adventure" },
+        { id: 'excitebike', title: 'Excitebike' },
+        { id: 'paperboy', title: 'Paperboy' },
+        { id: 'digdug', title: 'Dig Dug' },
+        { id: 'galaga', title: 'Galaga' },
+        { id: 'nrallyx', title: 'New Rally-X' },
+        { id: 'asteroid', title: 'Asteroids' },
+        { id: 'pacman', title: 'Pac-Man' },
+        { id: 'frogger', title: 'Frogger' },
+        { id: 'centipede', title: 'Centipede' },
+        { id: 'invaders', title: 'Space Invaders' }
+      ];
+
+      const randomGame = games[Math.floor(Math.random() * games.length)];
+      launchGameWindow(randomGame.id, randomGame.title);
     }
 
-    // Konami Code Sequence: Up Up Down Down Left Right Left Right B A Enter
-    const konamiCode = [
-      'ArrowUp', 'ArrowUp', 
-      'ArrowDown', 'ArrowDown', 
-      'ArrowLeft', 'ArrowRight', 
-      'ArrowLeft', 'ArrowRight', 
-      'b', 'a', 'Enter'
-    ];
+    // --- Konami Code Listener ---
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter'];
     let konamiIndex = 0;
 
     window.addEventListener('keydown', function(event) {
-      // Panic key shortcut
       if (event.ctrlKey && event.shiftKey && event.altKey) {
         window.location.replace('https://classroom.google.com');
       }
 
-      // Check Konami Code keypresses (case-insensitive for letters)
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       const expectedKey = konamiCode[konamiIndex].length === 1 ? konamiCode[konamiIndex].toLowerCase() : konamiCode[konamiIndex];
 
@@ -400,6 +451,97 @@
       } else {
         konamiIndex = 0;
       }
+    });
+
+    // --- DVD Screensaver Logic ---
+    let idleTimer;
+    let screensaverActive = false;
+    let animationFrameId;
+    let cornerInterval;
+
+    const screensaver = document.getElementById('screensaver');
+    const logo = document.getElementById('dvd-logo');
+
+    let x = 100, y = 100;
+    let dx = 3, dy = 3;
+    const logoWidth = 120, logoHeight = 60;
+    const colors = ['#ff0055', '#00ffcc', '#ffcc00', '#0099ff', '#ff6600', '#cc00ff'];
+
+    function changeColor() {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      logo.style.fill = randomColor;
+    }
+
+    function updateDVD() {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      x += dx;
+      y += dy;
+
+      let bounced = false;
+
+      if (x + logoWidth >= screenWidth || x <= 0) {
+        dx = -dx;
+        bounced = true;
+      }
+      if (y + logoHeight >= screenHeight || y <= 0) {
+        dy = -dy;
+        bounced = true;
+      }
+
+      if (bounced) changeColor();
+
+      logo.style.left = x + 'px';
+      logo.style.top = y + 'px';
+
+      if (screensaverActive) {
+        animationFrameId = requestAnimationFrame(updateDVD);
+      }
+    }
+
+    function forceCornerHit() {
+      if (!screensaverActive) return;
+      // Snap DVD logo exactly to top-right corner and change color
+      x = window.innerWidth - logoWidth;
+      y = 0;
+      dx = -Math.abs(dx);
+      dy = Math.abs(dy);
+      changeColor();
+    }
+
+    function startScreensaver() {
+      if (!isUnlocked) return;
+      screensaverActive = true;
+      screensaver.style.display = 'block';
+      x = Math.random() * (window.innerWidth - logoWidth);
+      y = Math.random() * (window.innerHeight - logoHeight);
+      updateDVD();
+
+      // Trigger exact corner hit every 2 minutes (120000ms) while screensaver is active
+      cornerInterval = setInterval(forceCornerHit, 120000);
+    }
+
+    function stopScreensaver() {
+      if (!screensaverActive) return;
+      screensaverActive = false;
+      screensaver.style.display = 'none';
+      cancelAnimationFrame(animationFrameId);
+      clearInterval(cornerInterval);
+    }
+
+    function resetIdleTimer() {
+      stopScreensaver();
+      clearTimeout(idleTimer);
+      if (isUnlocked) {
+        // 1 minute (60000ms) idle timer
+        idleTimer = setTimeout(startScreensaver, 60000);
+      }
+    }
+
+    // Reset idle timer on user activity
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(eventType => {
+      window.addEventListener(eventType, resetIdleTimer, true);
     });
   </script>
 
