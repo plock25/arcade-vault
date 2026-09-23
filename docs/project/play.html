@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website - Player</title>
+  <title>Patrick's Vault - Player</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     body, html {
@@ -82,7 +82,15 @@
       window.EJS_core = coreType;
       window.EJS_gameUrl = romPath;
       window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+      window.EJS_startOnLoaded = true;
     }
+
+    // Panic Keybind: Instant redirect to Google Classroom on Ctrl + Shift + Alt
+    window.addEventListener('keydown', function(event) {
+      if (event.ctrlKey && event.shiftKey && event.altKey) {
+        window.location.replace('https://classroom.google.com');
+      }
+    });
   </script>
   <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
