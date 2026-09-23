@@ -196,8 +196,10 @@
 </head>
 <body>
 
+  <!-- Top Right Trap Button (Hidden on lock screen) -->
   <button id="trap-button" class="trap-btn" onclick="triggerTrap()">⚠️ DO NOT PRESS</button>
 
+  <!-- Protected Access Modal -->
   <div id="lock-screen" class="card">
     <h2>🔒 Protected Access</h2>
     <p>Enter passcode:</p>
@@ -205,6 +207,7 @@
     <button class="submit-btn" onclick="unlock()">Submit</button>
   </div>
 
+  <!-- Main Vault Dashboard -->
   <div id="vault-content">
     <div class="vault-title">Patrick's Games</div>
     
@@ -319,11 +322,15 @@
     const maxAttempts = 3;
 
     function unlock() {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('vault-content').style.display = 'block';
+      document.getElementById('trap-button').style.display = 'block';
+    }
+
+    function checkPasscode() {
       const pin = document.getElementById('passcode').value;
       if (pin === '0525') {
-        document.getElementById('lock-screen').style.display = 'none';
-        document.getElementById('vault-content').style.display = 'block';
-        document.getElementById('trap-button').style.display = 'block';
+        unlock();
       } else {
         failedAttempts++;
         const remaining = maxAttempts - failedAttempts;
@@ -334,6 +341,14 @@
         }
       }
     }
+
+    // Passcode Enter key support
+    document.getElementById('passcode').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkPasscode();
+    });
+
+    // Override button onclick to use checkPasscode
+    document.querySelector('.submit-btn').setAttribute('onclick', 'checkPasscode()');
 
     function triggerTrap() {
       window.location.replace(trapImageUrl);
@@ -356,9 +371,34 @@
       window.location.href = randomHref;
     }
 
+    // Konami Code Sequence: Up Up Down Down Left Right Left Right B A Enter
+    const konamiCode = [
+      'ArrowUp', 'ArrowUp', 
+      'ArrowDown', 'ArrowDown', 
+      'ArrowLeft', 'ArrowRight', 
+      'ArrowLeft', 'ArrowRight', 
+      'b', 'a', 'Enter'
+    ];
+    let konamiIndex = 0;
+
     window.addEventListener('keydown', function(event) {
+      // Panic key shortcut
       if (event.ctrlKey && event.shiftKey && event.altKey) {
         window.location.replace('https://classroom.google.com');
+      }
+
+      // Check Konami Code keypresses (case-insensitive for letters)
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      const expectedKey = konamiCode[konamiIndex].length === 1 ? konamiCode[konamiIndex].toLowerCase() : konamiCode[konamiIndex];
+
+      if (key === expectedKey) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          unlock();
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
       }
     });
   </script>
