@@ -171,8 +171,8 @@
 
     .controls-container {
       display: flex;
-      gap: 12px;
-      max-width: 500px;
+      gap: 10px;
+      max-width: 600px;
       margin: 0 auto 30px auto;
     }
 
@@ -181,11 +181,11 @@
       text-align: left !important;
     }
 
-    .random-btn {
+    .control-btn {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
-      padding: 0 16px;
+      padding: 0 14px;
       border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
@@ -193,7 +193,7 @@
       transition: background 0.2s, border-color 0.2s;
     }
 
-    .random-btn:hover {
+    .control-btn:hover {
       background: #007aff;
       border-color: #007aff;
     }
@@ -244,6 +244,108 @@
     .game-subtitle {
       color: #8e8e93;
       font-size: 12px;
+    }
+
+    /* High Scores Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #2c2c2e;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 24px;
+      width: 90%;
+      max-width: 480px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #aaa;
+      font-size: 18px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .close-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+
+    .score-list {
+      overflow-y: auto;
+      flex: 1;
+      margin-bottom: 16px;
+      padding-right: 6px;
+    }
+
+    .score-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .score-item-title {
+      font-weight: 600;
+    }
+
+    .score-item-val {
+      font-family: monospace;
+      color: #30d158;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .submit-form-link {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #30d158;
+      color: #000;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .submit-form-link:hover {
+      background: #28b84c;
     }
 
     /* DVD Screensaver Overlay */
@@ -314,7 +416,8 @@
     
     <div class="controls-container">
       <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
-      <button class="random-btn" onclick="playRandomGame()">🎲 Random Game</button>
+      <button class="control-btn" onclick="openHighScoresModal()">🏆 High Scores</button>
+      <button class="control-btn" onclick="playRandomGame()">🎲 Random</button>
     </div>
     
     <div class="game-grid" id="grid">
@@ -416,12 +519,75 @@
     </div>
   </div>
 
+  <!-- High Scores Modal -->
+  <div id="highscores-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🏆 High Scores</div>
+        <button class="close-btn" onclick="closeHighScoresModal()">✕</button>
+      </div>
+      <div class="score-list" id="highscores-list">
+        <!-- Scores injected dynamically -->
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScmej-AAPFvQhfB3wq5mww4vOWZ8WDAMWWt8mf3V9g5A3Od-A/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="submit-form-link">
+        📩 Submit New High Score
+      </a>
+    </div>
+  </div>
+
   <script>
     const trapImageUrl = "https://myimgs.org/storage/images/35417/IMG_1310.jpg";
     let failedAttempts = 0;
     const maxAttempts = 3;
     let isUnlocked = false;
     let deferredPrompt;
+
+    // --- High Scores Data Store ---
+    const highScores = [
+      { name: "Super Mario Bros.", initials: "AAA", score: "000000" },
+      { name: "Mike Tyson's Punch-Out!!", initials: "AAA", score: "000000" },
+      { name: "Tetris", initials: "AAA", score: "000000" },
+      { name: "The Legend of Zelda", initials: "AAA", score: "000000" },
+      { name: "Contra", initials: "AAA", score: "000000" },
+      { name: "Donkey Kong", initials: "AAA", score: "000000" },
+      { name: "Mega Man", initials: "AAA", score: "000000" },
+      { name: "Metroid", initials: "AAA", score: "000000" },
+      { name: "Kirby's Adventure", initials: "AAA", score: "000000" },
+      { name: "Excitebike", initials: "AAA", score: "000000" },
+      { name: "Paperboy", initials: "AAA", score: "000000" },
+      { name: "Dig Dug", initials: "AAA", score: "000000" },
+      { name: "Galaga", initials: "AAA", score: "000000" },
+      { name: "New Rally-X", initials: "AAA", score: "000000" },
+      { name: "Asteroids", initials: "AAA", score: "000000" },
+      { name: "Pac-Man", initials: "AAA", score: "000000" },
+      { name: "Frogger", initials: "AAA", score: "000000" },
+      { name: "Centipede", initials: "AAA", score: "000000" },
+      { name: "Space Invaders", initials: "AAA", score: "000000" }
+    ];
+
+    function renderHighScores() {
+      const container = document.getElementById('highscores-list');
+      container.innerHTML = highScores.map(game => `
+        <div class="score-item">
+          <span class="score-item-title">${game.name}</span>
+          <span class="score-item-val">${game.initials} - ${game.score}</span>
+        </div>
+      `).join('');
+    }
+
+    function openHighScoresModal() {
+      renderHighScores();
+      document.getElementById('highscores-modal').style.display = 'flex';
+    }
+
+    function closeHighScoresModal() {
+      document.getElementById('highscores-modal').style.display = 'none';
+    }
+
+    // Close modal on clicking overlay background
+    document.getElementById('highscores-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeHighScoresModal();
+    });
 
     // --- PWA Installation Listener ---
     window.addEventListener('beforeinstallprompt', (e) => {
