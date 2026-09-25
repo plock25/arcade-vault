@@ -1,1665 +1,833 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Patrick's Website</title>
-
   <link rel="icon" type="image/png" href="favicon.png">
 
-
-
   <!-- PWA Settings for Standalone App Mode -->
-
   <meta name="mobile-web-app-capable" content="yes">
-
   <meta name="apple-mobile-web-app-capable" content="yes">
-
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
   <meta name="theme-color" content="#1c1c1e">
 
-
-
   <!-- Inline Manifest to enable "Install as App" -->
-
   <script>
-
     const manifest = {
-
       name: "Patrick's Launcher",
-
       short_name: "Patrick's Vault",
-
       start_url: "./",
-
       display: "standalone",
-
       background_color: "#1c1c1e",
-
       theme_color: "#1c1c1e",
-
       icons: [{
-
         src: "favicon.png",
-
         sizes: "192x192",
-
         type: "image/png"
-
       }]
-
     };
-
     const stringManifest = JSON.stringify(manifest);
-
     const blob = new Blob([stringManifest], {type: 'application/json'});
-
     const manifestURL = URL.createObjectURL(blob);
-
     const link = document.createElement('link');
-
     link.rel = 'manifest';
-
     link.href = manifestURL;
-
     document.head.appendChild(link);
-
   </script>
 
-
-
   <style>
-
     * { box-sizing: border-box; }
-
     body {
-
       background-color: #1c1c1e;
-
       color: #ffffff;
-
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
       margin: 0;
-
       min-height: 100vh;
-
       display: flex;
-
       justify-content: center;
-
       align-items: center;
-
       position: relative;
-
     }
-
-
 
     /* Top Right Controls */
-
     .top-controls {
-
       position: absolute;
-
       top: 16px;
-
       right: 16px;
-
       display: flex;
-
       gap: 10px;
-
       z-index: 10;
-
     }
-
-
 
     .install-btn {
-
       display: none;
-
       background: rgba(0, 122, 255, 0.2);
-
       color: #0a84ff;
-
       border: 1px solid rgba(0, 122, 255, 0.4);
-
       padding: 8px 12px;
-
       font-size: 12px;
-
       font-weight: 600;
-
       border-radius: 8px;
-
       cursor: pointer;
-
       text-transform: uppercase;
-
       letter-spacing: 0.5px;
-
       transition: background 0.2s, border-color 0.2s;
-
     }
-
-
 
     .install-btn:hover {
-
       background: rgba(0, 122, 255, 0.4);
-
       border-color: #0a84ff;
-
     }
-
-
 
     .trap-btn {
-
       display: none;
-
       background: rgba(255, 59, 48, 0.15);
-
       color: #ff453a;
-
       border: 1px solid rgba(255, 59, 48, 0.3);
-
       padding: 8px 12px;
-
       font-size: 12px;
-
       font-weight: 600;
-
       border-radius: 8px;
-
       cursor: pointer;
-
       text-transform: uppercase;
-
       letter-spacing: 0.5px;
-
       transition: background 0.2s, border-color 0.2s;
-
     }
-
-
 
     .trap-btn:hover {
-
       background: rgba(255, 59, 48, 0.3);
-
       border-color: #ff453a;
-
     }
-
-
 
     /* Modal / Container Cards */
-
     .card {
-
       background: rgba(255, 255, 255, 0.05);
-
       border: 1px solid rgba(255, 255, 255, 0.1);
-
       border-radius: 16px;
-
       padding: 30px 24px;
-
       width: 90%;
-
       max-width: 400px;
-
       text-align: center;
-
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-
     }
-
-
 
     .card h2 {
-
       font-size: 22px;
-
       font-weight: 600;
-
       margin: 0 0 8px 0;
-
     }
-
-
 
     .card p {
-
       color: #8e8e93;
-
       font-size: 14px;
-
       margin: 0 0 20px 0;
-
     }
-
-
 
     /* Inputs & Buttons */
-
     input[type="password"], input[type="text"] {
-
       width: 100%;
-
       padding: 12px 16px;
-
       background: rgba(255, 255, 255, 0.08);
-
       border: 1px solid rgba(255, 255, 255, 0.15);
-
       border-radius: 10px;
-
       color: #ffffff;
-
       font-size: 15px;
-
       outline: none;
-
       text-align: center;
-
     }
-
-
 
     input::placeholder { color: #636366; }
 
-
-
     .submit-btn {
-
       width: 100%;
-
       padding: 12px;
-
       background: #007aff;
-
       color: #ffffff;
-
       border: none;
-
       border-radius: 10px;
-
       font-size: 16px;
-
       font-weight: 600;
-
       cursor: pointer;
-
       margin-top: 16px;
-
     }
-
-
 
     .submit-btn:hover { background: #0062cc; }
 
-
-
     /* Vault Interface */
-
     #vault-content {
-
       display: none;
-
       width: 100%;
-
       max-width: 900px;
-
       padding: 40px 20px;
-
     }
-
-
 
     .vault-title {
-
       text-align: center;
-
       font-size: 28px;
-
       font-weight: 700;
-
       margin-bottom: 24px;
-
     }
-
-
 
     .controls-container {
-
       display: flex;
-
       gap: 10px;
-
       max-width: 600px;
-
       margin: 0 auto 30px auto;
-
     }
-
-
 
     .search-bar {
-
       flex: 1;
-
       text-align: left !important;
-
     }
-
-
 
     .control-btn {
-
       background: rgba(255, 255, 255, 0.1);
-
       border: 1px solid rgba(255, 255, 255, 0.2);
-
       color: #fff;
-
       padding: 0 14px;
-
       border-radius: 10px;
-
       font-weight: 600;
-
       cursor: pointer;
-
       white-space: nowrap;
-
       transition: background 0.2s, border-color 0.2s;
-
     }
-
-
 
     .control-btn:hover {
-
       background: #007aff;
-
       border-color: #007aff;
-
     }
-
-
 
     .game-grid {
-
       display: grid;
-
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-
       gap: 20px;
-
       width: 100%;
-
     }
-
-
 
     .game-card {
-
       background: rgba(255, 255, 255, 0.05);
-
       border: 1px solid rgba(255, 255, 255, 0.1);
-
       border-radius: 14px;
-
       padding: 12px;
-
       text-decoration: none;
-
       color: #ffffff;
-
       display: flex;
-
       flex-direction: column;
-
       align-items: center;
-
       transition: border-color 0.2s, transform 0.2s, background 0.2s;
-
       cursor: pointer;
-
     }
-
-
 
     .game-card:hover {
-
       border-color: #007aff;
-
       transform: translateY(-4px);
-
       background: rgba(255, 255, 255, 0.08);
-
     }
-
-
 
     .game-cover {
-
       width: 100%;
-
       height: 220px;
-
       object-fit: cover;
-
       border-radius: 8px;
-
       margin-bottom: 12px;
-
       background: rgba(0, 0, 0, 0.4);
-
     }
-
-
 
     .game-title {
-
       font-weight: 600;
-
       font-size: 15px;
-
       margin-bottom: 4px;
-
       text-align: center;
-
     }
-
-
 
     .game-subtitle {
-
       color: #8e8e93;
-
       font-size: 12px;
-
     }
-
-
 
     /* High Scores Modal */
-
     .modal-overlay {
-
       display: none;
-
       position: fixed;
-
       top: 0;
-
       left: 0;
-
       width: 100vw;
-
       height: 100vh;
-
       background: rgba(0, 0, 0, 0.8);
-
       backdrop-filter: blur(8px);
-
       z-index: 1000;
-
       justify-content: center;
-
       align-items: center;
-
     }
-
-
 
     .modal-card {
-
       background: #2c2c2e;
-
       border: 1px solid rgba(255, 255, 255, 0.15);
-
       border-radius: 18px;
-
       padding: 24px;
-
       width: 90%;
-
       max-width: 480px;
-
       max-height: 85vh;
-
       display: flex;
-
       flex-direction: column;
-
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-
     }
-
-
 
     .modal-header {
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       margin-bottom: 16px;
-
     }
-
-
 
     .modal-title {
-
       font-size: 20px;
-
       font-weight: 700;
-
       display: flex;
-
       align-items: center;
-
       gap: 8px;
-
     }
-
-
 
     .close-btn {
-
       background: rgba(255, 255, 255, 0.1);
-
       border: none;
-
       color: #aaa;
-
       font-size: 18px;
-
       width: 30px;
-
       height: 30px;
-
       border-radius: 50%;
-
       cursor: pointer;
-
     }
-
-
 
     .close-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
 
-
-
     .score-list {
-
       overflow-y: auto;
-
       flex: 1;
-
       margin-bottom: 16px;
-
       padding-right: 6px;
-
     }
-
-
 
     .score-item {
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       padding: 10px 12px;
-
       background: rgba(255, 255, 255, 0.04);
-
       border-radius: 8px;
-
       margin-bottom: 8px;
-
       font-size: 14px;
-
     }
-
-
 
     .score-item-title {
-
       font-weight: 600;
-
     }
-
-
 
     /* Line 247: High score values set to white */
-
     .score-item-val {
-
       font-family: monospace;
-
       color: #ffffff;
-
       font-weight: 700;
-
       letter-spacing: 1px;
-
     }
-
-
 
     /* Line 255: Submit High Score button styled white */
-
     .submit-form-link {
-
       display: block;
-
       width: 100%;
-
       text-align: center;
-
       background: #ffffff;
-
       color: #000000;
-
       font-weight: 700;
-
       padding: 12px;
-
       border-radius: 10px;
-
       text-decoration: none;
-
       transition: background 0.2s;
-
     }
-
-
 
     .submit-form-link:hover {
-
       background: #e0e0e0;
-
     }
-
-
 
     /* DVD Screensaver Overlay */
-
     #screensaver {
-
       display: none;
-
       position: fixed;
-
       top: 0;
-
       left: 0;
-
       width: 100vw;
-
       height: 100vh;
-
       background-color: #000000;
-
       z-index: 9999;
-
     }
-
-
 
     #dvd-logo-container {
-
       position: absolute;
-
       width: 150px;
-
       height: 80px;
-
       display: flex;
-
       flex-direction: column;
-
       align-items: center;
-
       justify-content: center;
-
     }
-
-
 
     .dvd-text-group { display: flex; gap: 2px; transform: skewX(-14deg); }
-
     .dvd-letter-d { width: 38px; height: 40px; background: #ff0055; border-radius: 0 20px 20px 0; position: relative; }
-
     .dvd-letter-d::after { content: ''; position: absolute; top: 10px; left: 10px; width: 16px; height: 20px; background: #000; border-radius: 0 10px 10px 0; }
-
     .dvd-letter-v { width: 38px; height: 40px; background: #ff0055; clip-path: polygon(0 0, 28% 0, 50% 70%, 72% 0, 100% 0, 65% 100%, 35% 100%); }
-
     .dvd-disc-base { width: 135px; height: 18px; background: #ff0055; border-radius: 50%; margin-top: -6px; display: flex; align-items: center; justify-content: center; }
-
     .dvd-disc-hole { width: 55px; height: 7px; background: #000; border-radius: 50%; }
-
     .dvd-subtext { color: #ff0055; font-family: Arial, sans-serif; font-size: 11px; font-weight: 900; letter-spacing: 7px; margin-top: 2px; margin-left: 6px; }
-
   </style>
-
 </head>
-
 <body>
 
-
-
   <!-- DVD Screensaver -->
-
   <div id="screensaver">
-
     <div id="dvd-logo-container">
-
       <div class="dvd-text-group">
-
         <div class="dvd-letter-d dvd-fill"></div>
-
         <div class="dvd-letter-v dvd-fill"></div>
-
         <div class="dvd-letter-d dvd-fill"></div>
-
       </div>
-
       <div class="dvd-disc-base dvd-fill">
-
         <div class="dvd-disc-hole"></div>
-
       </div>
-
       <div class="dvd-subtext">VIDEO</div>
-
     </div>
-
   </div>
-
-
 
   <!-- Top Right Action Buttons -->
-
   <div class="top-controls">
-
     <button id="install-button" class="install-btn" onclick="installLauncherApp()">📲 Install Launcher</button>
-
     <button id="trap-button" class="trap-btn" onclick="triggerTrap()">⚠️ DO NOT PRESS</button>
-
   </div>
-
-
 
   <!-- Protected Access Modal -->
-
   <div id="lock-screen" class="card">
-
     <h2>🔒 Protected Access</h2>
-
     <p>Enter passcode:</p>
-
     <input type="password" id="passcode" placeholder="Passcode">
-
     <button class="submit-btn" onclick="checkPasscode()">Submit</button>
-
   </div>
-
-
 
   <!-- Main Vault Dashboard -->
-
   <div id="vault-content">
-
     <div class="vault-title">Patrick's Website</div>
-
     
-
     <div class="controls-container">
-
       <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
-
       <button class="control-btn" onclick="openHighScoresModal()">🏆 High Scores</button>
-
       <button class="control-btn" onclick="playRandomGame()">🎲 Random</button>
-
     </div>
-
     
-
     <div class="game-grid" id="grid">
-
       <a onclick="launchGameApp('mario', 'Super Mario Bros.')" class="game-card">
-
         <img src="covers/mario.jpg" class="game-cover" alt="Super Mario Bros.">
-
         <div class="game-title">Super Mario Bros.</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('punchout', 'Mike Tyson\'s Punch-Out!!')" class="game-card">
-
         <img src="covers/punchout.jpg" class="game-cover" alt="Mike Tyson's Punch-Out!!">
-
         <div class="game-title">Mike Tyson's Punch-Out!!</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('tetris', 'Tetris')" class="game-card">
-
         <img src="covers/tetris.jpg" class="game-cover" alt="Tetris">
-
         <div class="game-title">Tetris</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('zelda', 'The Legend of Zelda')" class="game-card">
-
         <img src="covers/zelda.jpg" class="game-cover" alt="The Legend of Zelda">
-
         <div class="game-title">The Legend of Zelda</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('contra', 'Contra')" class="game-card">
-
         <img src="covers/contra.jpg" class="game-cover" alt="Contra">
-
         <div class="game-title">Contra</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('donkeykong', 'Donkey Kong')" class="game-card">
-
         <img src="covers/donkeykong.jpg" class="game-cover" alt="Donkey Kong">
-
         <div class="game-title">Donkey Kong</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('megaman', 'Mega Man')" class="game-card">
-
         <img src="covers/megaman.jpg" class="game-cover" alt="Mega Man">
-
         <div class="game-title">Mega Man</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('metroid', 'Metroid')" class="game-card">
-
         <img src="covers/metroid.jpg" class="game-cover" alt="Metroid">
-
         <div class="game-title">Metroid</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('kirby', 'Kirby\'s Adventure')" class="game-card">
-
         <img src="covers/kirby.jpg" class="game-cover" alt="Kirby's Adventure">
-
         <div class="game-title">Kirby's Adventure</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('excitebike', 'Excitebike')" class="game-card">
-
         <img src="covers/excitebike.jpg" class="game-cover" alt="Excitebike">
-
         <div class="game-title">Excitebike</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('paperboy', 'Paperboy')" class="game-card">
-
         <img src="covers/paperboy.jpg" class="game-cover" alt="Paperboy">
-
         <div class="game-title">Paperboy</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('digdug', 'Dig Dug')" class="game-card">
-
         <img src="covers/digdug.jpg" class="game-cover" alt="Dig Dug">
-
         <div class="game-title">Dig Dug</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('galaga', 'Galaga')" class="game-card">
-
         <img src="covers/galaga.jpg" class="game-cover" alt="Galaga">
-
         <div class="game-title">Galaga</div>
-
         <div class="game-subtitle">NES Game</div>
-
       </a>
-
       <a onclick="launchGameApp('nrallyx', 'New Rally-X')" class="game-card">
-
         <img src="covers/nrallyx.jpg" class="game-cover" alt="New Rally-X">
-
         <div class="game-title">New Rally-X</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
       <a onclick="launchGameApp('asteroid', 'Asteroids')" class="game-card">
-
         <img src="covers/asteroids.jpg" class="game-cover" alt="Asteroids">
-
         <div class="game-title">Asteroids</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
       <a onclick="launchGameApp('pacman', 'Pac-Man')" class="game-card">
-
         <img src="covers/pacman.jpg" class="game-cover" alt="Pac-Man">
-
         <div class="game-title">Pac-Man</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
       <a onclick="launchGameApp('frogger', 'Frogger')" class="game-card">
-
         <img src="covers/frogger.jpg" class="game-cover" alt="Frogger">
-
         <div class="game-title">Frogger</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
       <a onclick="launchGameApp('centipede', 'Centipede')" class="game-card">
-
         <img src="covers/centipede.jpg" class="game-cover" alt="Centipede">
-
         <div class="game-title">Centipede</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
       <a onclick="launchGameApp('invaders', 'Space Invaders')" class="game-card">
-
         <img src="covers/invaders.jpg" class="game-cover" alt="Space Invaders">
-
         <div class="game-title">Space Invaders</div>
-
         <div class="game-subtitle">Arcade Game</div>
-
       </a>
-
     </div>
-
   </div>
-
-
 
   <!-- High Scores Modal -->
-
   <div id="highscores-modal" class="modal-overlay">
-
     <div class="modal-card">
-
       <div class="modal-header">
-
         <div class="modal-title">🏆 High Scores</div>
-
         <button class="close-btn" onclick="closeHighScoresModal()">✕</button>
-
       </div>
-
       <div class="score-list" id="highscores-list">
-
         <!-- Scores injected dynamically -->
-
       </div>
-
       <a href="https://docs.google.com/forms/d/e/1FAIpQLScmej-AAPFvQhfB3wq5mww4vOWZ8WDAMWWt8mf3V9g5A3Od-A/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="submit-form-link">
-
         📫 Submit New High Score
-
       </a>
-
     </div>
-
   </div>
 
-
-
   <script>
-
     const trapImageUrl = "https://myimgs.org/storage/images/35417/IMG_1310.jpg";
-
     let failedAttempts = 0;
-
     const maxAttempts = 3;
-
     let isUnlocked = false;
-
     let deferredPrompt;
 
-
-
     // --- High Scores Data Store ---
-
     const highScores = [
-
       { name: "Super Mario Bros.", initials: "PLOCK", score: "000001" },
-
       { name: "Mike Tyson's Punch-Out!!", initials: "AAA", score: "000000" },
-
       { name: "Tetris", initials: "AAA", score: "000000" },
-
       { name: "The Legend of Zelda", initials: "AAA", score: "000000" },
-
       { name: "Contra", initials: "AAA", score: "000000" },
-
       { name: "Donkey Kong", initials: "AAA", score: "000000" },
-
       { name: "Mega Man", initials: "AAA", score: "000000" },
-
       { name: "Metroid", initials: "AAA", score: "000000" },
-
       { name: "Kirby's Adventure", initials: "AAA", score: "000000" },
-
       { name: "Excitebike", initials: "AAA", score: "000000" },
-
       { name: "Paperboy", initials: "AAA", score: "000000" },
-
       { name: "Dig Dug", initials: "AAA", score: "000000" },
-
       { name: "Galaga", initials: "AAA", score: "000000" },
-
       { name: "New Rally-X", initials: "AAA", score: "000000" },
-
       { name: "Asteroids", initials: "AAA", score: "000000" },
-
       { name: "Pac-Man", initials: "MUZZ", score: "001080" },
-
       { name: "Frogger", initials: "AAA", score: "000000" },
-
       { name: "Centipede", initials: "AAA", score: "000000" },
-
       { name: "Space Invaders", initials: "AAA", score: "000000" }
-
     ];
 
-
-
     function renderHighScores() {
-
       const container = document.getElementById('highscores-list');
-
       container.innerHTML = highScores.map(game => `
-
         <div class="score-item">
-
           <span class="score-item-title">${game.name}</span>
-
           <span class="score-item-val">${game.initials} - ${game.score}</span>
-
         </div>
-
       `).join('');
-
     }
-
-
 
     function openHighScoresModal() {
-
       renderHighScores();
-
       document.getElementById('highscores-modal').style.display = 'flex';
-
     }
-
-
 
     function closeHighScoresModal() {
-
       document.getElementById('highscores-modal').style.display = 'none';
-
     }
-
-
 
     // Close modal on clicking overlay background
-
     document.getElementById('highscores-modal').addEventListener('click', function(e) {
-
       if (e.target === this) closeHighScoresModal();
-
     });
-
-
 
     // --- PWA Installation Listener ---
-
     window.addEventListener('beforeinstallprompt', (e) => {
-
       e.preventDefault();
-
       deferredPrompt = e;
-
       if (isUnlocked) {
-
         document.getElementById('install-button').style.display = 'block';
-
       }
-
     });
-
-
 
     function installLauncherApp() {
-
       if (deferredPrompt) {
-
         deferredPrompt.prompt();
-
         deferredPrompt.userChoice.then(() => {
-
           deferredPrompt = null;
-
           document.getElementById('install-button').style.display = 'none';
-
         });
-
       }
-
     }
-
-
 
     // --- Unlock Mechanics ---
-
     function unlock() {
-
       isUnlocked = true;
-
       document.getElementById('lock-screen').style.display = 'none';
-
       document.getElementById('vault-content').style.display = 'block';
-
       document.getElementById('trap-button').style.display = 'block';
-
       if (deferredPrompt) {
-
         document.getElementById('install-button').style.display = 'block';
-
       }
-
       resetIdleTimer();
-
     }
-
-
 
     function checkPasscode() {
-
       const pin = document.getElementById('passcode').value;
-
       if (pin === '0525') {
-
         unlock();
-
       } else {
-
         failedAttempts++;
-
         const remaining = maxAttempts - failedAttempts;
-
         if (remaining <= 0) {
-
           window.location.replace("about:blank");
-
         } else {
-
           alert(`Incorrect passcode. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`);
-
         }
-
       }
-
     }
-
-
 
     document.getElementById('passcode').addEventListener('keypress', function(e) {
-
       if (e.key === 'Enter') checkPasscode();
-
     });
-
-
 
     function triggerTrap() {
-
       window.location.replace(trapImageUrl);
-
     }
-
-
 
     // --- Separate Game App Launcher (No read-only URL bar) ---
-
     function launchGameApp(gameId, title) {
-
       const gameTargetUrl = `docs/project/play.html?game=${gameId}`;
 
-
-
       // Open isolated app frame without browser chrome
-
       const appWindow = window.open(
-
         'about:blank',
-
         `App_${gameId}`,
-
         'width=920,height=680,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
-
       );
 
-
-
       if (appWindow) {
-
         appWindow.document.write(`
-
           <!DOCTYPE html>
-
           <html lang="en">
-
           <head>
-
             <meta charset="UTF-8">
-
             <title>${title}</title>
-
             <style>
-
               html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; background: #000000; overflow: hidden; }
-
               iframe { width: 100%; height: 100%; border: none; display: block; }
-
             </style>
-
           </head>
-
           <body>
-
             <iframe src="${gameTargetUrl}"></iframe>
-
           </body>
-
           </html>
-
         `);
-
         appWindow.document.close();
-
       } else {
-
         alert("Please allow popups to launch separate game windows!");
-
       }
-
     }
-
-
 
     function filterGames() {
-
       const input = document.getElementById('search').value.toLowerCase();
-
       const cards = document.getElementsByClassName('game-card');
-
       for (let i = 0; i < cards.length; i++) {
-
         const title = cards[i].getElementsByClassName('game-title')[0].innerText.toLowerCase();
-
         cards[i].style.display = title.includes(input) ? 'flex' : 'none';
-
       }
-
     }
-
-
 
     function playRandomGame() {
-
       const games = [
-
         { id: 'mario', title: 'Super Mario Bros.' },
-
         { id: 'punchout', title: "Mike Tyson's Punch-Out!!" },
-
         { id: 'tetris', title: 'Tetris' },
-
         { id: 'zelda', title: 'The Legend of Zelda' },
-
         { id: 'contra', title: 'Contra' },
-
         { id: 'donkeykong', title: 'Donkey Kong' },
-
         { id: 'megaman', title: 'Mega Man' },
-
         { id: 'metroid', title: 'Metroid' },
-
         { id: 'kirby', title: "Kirby's Adventure" },
-
         { id: 'excitebike', title: 'Excitebike' },
-
         { id: 'paperboy', title: 'Paperboy' },
-
         { id: 'digdug', title: 'Dig Dug' },
-
         { id: 'galaga', title: 'Galaga' },
-
         { id: 'nrallyx', title: 'New Rally-X' },
-
         { id: 'asteroid', title: 'Asteroids' },
-
         { id: 'pacman', title: 'Pac-Man' },
-
         { id: 'frogger', title: 'Frogger' },
-
         { id: 'centipede', title: 'Centipede' },
-
         { id: 'invaders', title: 'Space Invaders' }
-
       ];
 
-
-
       const randomGame = games[Math.floor(Math.random() * games.length)];
-
       launchGameApp(randomGame.id, randomGame.title);
-
     }
-
-
 
     // --- Konami Code Listener ---
-
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter'];
-
     let konamiIndex = 0;
 
-
-
     window.addEventListener('keydown', function(event) {
-
       if (event.ctrlKey && event.shiftKey && event.altKey) {
-
         window.location.replace('https://classroom.google.com');
-
       }
-
-
 
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
-
       const expectedKey = konamiCode[konamiIndex].length === 1 ? konamiCode[konamiIndex].toLowerCase() : konamiCode[konamiIndex];
 
-
-
       if (key === expectedKey) {
-
         konamiIndex++;
-
         if (konamiIndex === konamiCode.length) {
-
           unlock();
-
           konamiIndex = 0;
-
         }
-
       } else {
-
         konamiIndex = 0;
-
       }
-
     });
 
-
-
     // --- DVD Screensaver Logic ---
-
     let idleTimer;
-
     let screensaverActive = false;
-
     let animationFrameId;
-
     let cornerInterval;
 
-
-
     const screensaver = document.getElementById('screensaver');
-
     const logoContainer = document.getElementById('dvd-logo-container');
 
-
-
     let x = 100, y = 100;
-
     let dx = 3, dy = 3;
-
     const logoWidth = 150, logoHeight = 80;
-
     const colors = ['#ff0055', '#00ffcc', '#ffcc00', '#0099ff', '#ff6600', '#cc00ff', '#33ff33'];
 
-
-
     function changeColor() {
-
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
       logoContainer.querySelectorAll('.dvd-fill').forEach(el => el.style.background = randomColor);
-
       const subtext = logoContainer.querySelector('.dvd-subtext');
-
       if (subtext) subtext.style.color = randomColor;
-
     }
 
-
-
     function updateDVD() {
-
       if (!screensaverActive) return;
 
-
-
       const screenWidth = window.innerWidth;
-
       const screenHeight = window.innerHeight;
 
-
-
       x += dx;
-
       y += dy;
-
-
 
       let bounced = false;
 
-
-
       if (x + logoWidth >= screenWidth || x <= 0) {
-
         dx = -dx;
-
         bounced = true;
-
       }
-
       if (y + logoHeight >= screenHeight || y <= 0) {
-
         dy = -dy;
-
         bounced = true;
-
       }
-
-
 
       if (bounced) changeColor();
 
-
-
       logoContainer.style.left = x + 'px';
-
       logoContainer.style.top = y + 'px';
 
-
-
       animationFrameId = requestAnimationFrame(updateDVD);
-
     }
-
-
 
     function forceCornerHit() {
-
       if (!screensaverActive) return;
-
       x = window.innerWidth - logoWidth;
-
       y = 0;
-
       dx = -Math.abs(dx);
-
       dy = Math.abs(dy);
-
       changeColor();
-
     }
-
-
 
     function startScreensaver() {
-
       if (!isUnlocked || screensaverActive) return;
-
       screensaverActive = true;
-
       screensaver.style.display = 'block';
 
-
-
       x = Math.random() * (window.innerWidth - logoWidth);
-
       y = Math.random() * (window.innerHeight - logoHeight);
 
-
-
       animationFrameId = requestAnimationFrame(updateDVD);
-
       cornerInterval = setInterval(forceCornerHit, 120000);
-
     }
-
-
 
     function stopScreensaver() {
-
       if (!screensaverActive) return;
-
       screensaverActive = false;
-
       screensaver.style.display = 'none';
-
       cancelAnimationFrame(animationFrameId);
-
       clearInterval(cornerInterval);
-
     }
-
-
 
     function resetIdleTimer() {
-
       stopScreensaver();
-
       clearTimeout(idleTimer);
-
       if (isUnlocked) {
-
         idleTimer = setTimeout(startScreensaver, 60000);
-
       }
-
     }
 
-
-
     ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(eventType => {
-
       window.addEventListener(eventType, resetIdleTimer, true);
-
     });
-
   </script>
 
-
-
 </body>
-
-</html> 
+</html>
