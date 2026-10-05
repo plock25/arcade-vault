@@ -526,6 +526,10 @@
         <div class="game-title">Space Invaders</div>
         <div class="game-subtitle">Arcade Game</div>
       </a>
+      <a onclick="launchGameApp('tron', 'Tron')" class="game-card">
+        <img src="covers/tron.jpg" class="game-cover" alt="Tron">
+        <div class="game-title">Tron</div>
+        <div class="game-subtitle">Arcade Game</div>
     </div>
   </div>
 
@@ -574,7 +578,8 @@
       { name: "Pac-Man", initials: "MUZZ", score: "001080" },
       { name: "Frogger", initials: "AAA", score: "000000" },
       { name: "Centipede", initials: "AAA", score: "000000" },
-      { name: "Space Invaders", initials: "AAA", score: "000000" }
+      { name: "Space Invaders", initials: "AAA", score: "000000" },
+      { name: "Tron", initials: "AAA", score: "000000" }
     ];
 
     function renderHighScores() {
@@ -719,7 +724,8 @@
         { id: 'pacman', title: 'Pac-Man' },
         { id: 'frogger', title: 'Frogger' },
         { id: 'centipede', title: 'Centipede' },
-        { id: 'invaders', title: 'Space Invaders' }
+        { id: 'invaders', title: 'Space Invaders' },
+        { id: 'tron', title: 'Tron' }
       ];
 
       const randomGame = games[Math.floor(Math.random() * games.length)];
